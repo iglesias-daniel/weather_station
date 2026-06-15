@@ -4,11 +4,19 @@ A weather station with a ultra-low-power design for temperature, pressure, rain,
 # Arquitecture
 
 ~~~mermaid
-flowchart TB
-A[ESP32S3 - ULP] <--> B
-B[ESP32S3] <-->|ESP NOW| C
-C[ESP32] <-->|USB| D
-D[Raspberry]
+flowchart LR
+    subgraph Nodo["Nodo Sensor — ESP32-S3"]
+        S[Sensores] --> ULP[ULP Co-Processor]
+        ULP --> Main[Main Processor]
+    end
+
+    Main <-->|ESP-NOW| RX[ESP32 Receptor]
+
+    RX<-->|UART|RP[(Data)]
+
+    subgraph Gateway["Server - Raspberry"]
+        RP --> Graf[Grafana]
+    end
 
 ~~~
 

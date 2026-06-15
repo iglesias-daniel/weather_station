@@ -1,0 +1,14 @@
+flowchart LR
+    subgraph Nodo["Sensor Node — ESP32-S3"]
+        S[Sensors] --> ULP[ULP Co-Processor]
+        ULP --> Main[Main Processor]
+    end
+
+    Main <-->|ESP-NOW| RX[ESP32 Gateway Receiver]
+
+    RX <-->|UART| RP[(Raspberry Pi)]
+
+    subgraph Gateway["Server — Raspberry Pi"]
+        RP --> Influx[(InfluxDB)]
+        Influx --> Graf[Grafana]
+    end
